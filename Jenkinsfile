@@ -21,5 +21,10 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+            steps {
+                sh 'mvn compile jib:build'
+            }
+        }
     }
 }

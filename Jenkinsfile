@@ -15,6 +15,13 @@ pipeline {
 			
 		}
         stage('Test') {
+			agent {
+					docker {
+						image 'maven:3.8.1-adoptopenjdk-11'
+						args '-v /root/.m2:/root/.m2'
+						reuseNode true
+					}
+			}
             steps {
                 sh 'mvn test'
             }
@@ -26,9 +33,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                    dockerBuildAndPublish {
-                        repositoryName('imran4fujitsu/ci-cd-process')
-                    }
+				script {
+				def customImage = docker.build("my-image:${env.BUILD_ID}")
+				customImage.push()
+				}
             }
         }
 	}

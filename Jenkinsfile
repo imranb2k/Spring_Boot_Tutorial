@@ -23,7 +23,10 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker build -t springboot-example:0.1 .'
+                script {
+                    def customImage = docker.build("my-image:${env.BUILD_ID}")
+                    customImage.push()
+                }
             }
         }
     }

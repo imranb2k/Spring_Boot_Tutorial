@@ -23,10 +23,9 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                    def customImage = docker.build("my-image:${env.BUILD_ID}")
-                    customImage.push()
-                }
+                    dockerBuildAndPublish {
+                        repositoryName('imran4fujitsu/ci-cd-process')
+                    }
             }
         }
     }

@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'mvn compile jib:build'
+                sh 'docker build -t springboot-example:0.1 .'
             }
         }
     }

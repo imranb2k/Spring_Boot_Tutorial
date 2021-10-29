@@ -35,7 +35,9 @@ pipeline {
             steps {
                 script {
                    dockerImage = docker.build("imran4fujitsu/ci-cd-process:${env.BUILD_ID}")
-                   dockerImage.push()
+                   docker.withRegistry('', 'imran4fujitsu-dockerhub') {
+                        dockerImage.push()
+                   }
                 }
             }
         }

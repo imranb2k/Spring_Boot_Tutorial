@@ -36,7 +36,7 @@ pipeline {
                 script {
                    dockerImage = docker.build("springboot-example:${env.BUILD_ID}")
                        docker.withRegistry( '', 'imran4fujitsu-dockerhub') {
-                       dockerImage.push()
+                       dockerImage.push('imran4fujitsu/ci-cd-process')
                    }
                 }
             }

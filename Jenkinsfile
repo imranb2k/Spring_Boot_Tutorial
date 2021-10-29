@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                   dockerImage = docker.build('imran4fujitsu/ci-cd-process:${env.BUILD_ID}')
+                   dockerImage = docker.build("imran4fujitsu/ci-cd-process:${env.BUILD_ID}")
                    dockerImage.push()
                 }
             }

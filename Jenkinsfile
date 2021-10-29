@@ -33,8 +33,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-				sh 'docker build -t imran4fujitsu/ci-cd-process .'
-				sh 'docker push imran4fujitsu/ci-cd-process'
+                script {
+                   dockerImage = docker.build springboot-example
+                   docker.withRegistry( '', registryCredential ) {
+                   dockerImage.push("$BUILD_NUMBER")
+                   }
+                }
             }
         }
 	}

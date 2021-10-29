@@ -1,5 +1,8 @@
 pipeline {
    agent any
+    environment {
+       HEROKU_API_KEY = credentials('heroku-api-key')
+     }
     stages {
         stage('Build') {
 			agent {
@@ -33,13 +36,19 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                script {
-                   dockerImage = docker.build("imran4fujitsu/ci-cd-process:${env.BUILD_ID}")
-                   docker.withRegistry('', 'imran4fujitsu-dockerhub') {
-                        dockerImage.push()
-                   }
-                }
+                sh '''
+                echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com'
+                docker build -t springboot/java-web-app:latest .'
+                docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
+                docker push registry.heroku.com/springboot-ci-cd/web
+                '''
             }
         }
+
+        stage('Release') {
+              steps {
+                sh 'heroku container:release web --app=springboot-ci-cd'
+              }
+
 	}
 }

@@ -34,8 +34,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                   dockerImage = docker.build("springboot-example:${env.BUILD_ID}")
-                   dockerImage.push('imran4fujitsu/ci-cd-process')
+                   dockerImage = docker.build('imran4fujitsu/ci-cd-process:${env.BUILD_ID}')
+                   dockerImage.push()
                 }
             }
         }

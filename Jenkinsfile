@@ -37,8 +37,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com'
-                docker build -t springboot/java-web-app:latest .'
+                echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
+                docker build -t springboot/java-web-app:latest .
                 docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
                 docker push registry.heroku.com/springboot-ci-cd/web
                 '''

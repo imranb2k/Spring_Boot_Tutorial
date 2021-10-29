@@ -34,9 +34,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                   dockerImage = docker.build springboot
-                   docker.withRegistry( '', registryCredential ) {
-                   dockerImage.push("$BUILD_NUMBER")
+                   dockerImage = docker.build("springboot-example:${env.BUILD_ID}")
+                       docker.withRegistry( '', registryCredential ) {
+                       dockerImage.push()
                    }
                 }
             }

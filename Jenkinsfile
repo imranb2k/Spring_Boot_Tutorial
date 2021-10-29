@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                    dockerImage = docker.build("springboot-example:${env.BUILD_ID}")
-                       docker.withRegistry( '', registryCredential ) {
+                       docker.withRegistry( '', 'imran4fujitsu-dockerhub') {
                        dockerImage.push()
                    }
                 }

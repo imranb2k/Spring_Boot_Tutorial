@@ -33,10 +33,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-				script {
-				def customImage = docker.build("my-image:${env.BUILD_ID}")
-				customImage.push()
-				}
+				sh 'docker build -t imran4fujitsu/ci-cd-process .'
+				sh 'docker push imran4fujitsu/ci-cd-process'
             }
         }
 	}

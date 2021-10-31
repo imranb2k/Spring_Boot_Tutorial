@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Coverage') {
               steps {
-                  sh 'bash <(curl -s https://codecov.io/bash)'
+                  sh 'curl -s https://codecov.io/bash'
               }
 		}
         stage('Deploy') {

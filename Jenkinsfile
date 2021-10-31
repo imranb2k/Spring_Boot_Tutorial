@@ -34,6 +34,11 @@ pipeline {
                 }
             }
         }
+        stage('Coverage') {
+              steps {
+                  sh 'bash <(curl -s https://codecov.io/bash)'
+              }
+		}
         stage('Deploy') {
             steps {
                 sh '''
@@ -41,14 +46,9 @@ pipeline {
                 docker build -t springboot/java-web-app:latest .
                 docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
                 docker push registry.heroku.com/springboot-ci-cd/web
+                sh 'heroku container:release web --app=springboot-ci-cd'
                 '''
             }
         }
-
-        stage('Release') {
-              steps {
-                sh 'heroku container:release web --app=springboot-ci-cd'
-              }
-		}
 	}
 }

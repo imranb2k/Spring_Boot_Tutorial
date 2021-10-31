@@ -2,6 +2,7 @@ pipeline {
    agent any
     environment {
        HEROKU_API_KEY = credentials('heroku-api-key')
+       CODECOV_TOKEN = credentials('codecov-token')
      }
     stages {
         stage('Build') {
@@ -34,9 +35,9 @@ pipeline {
                 }
             }
         }
-        stage('Coverage') {
+        stage('Code Coverage') {
               steps {
-                  sh 'curl -s https://codecov.io/bash'
+                  sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
               }
 		}
         stage('Deploy') {
@@ -46,9 +47,13 @@ pipeline {
                 docker build -t springboot/java-web-app:latest .
                 docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
                 docker push registry.heroku.com/springboot-ci-cd/web
-                sh 'heroku container:release web --app=springboot-ci-cd'
                 '''
             }
         }
+         stage('Release') {
+            steps {
+                sh 'heroku container:release web --app=springboot-ci-cd'
+            }
+         }
 	}
 }

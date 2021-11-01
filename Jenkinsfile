@@ -37,15 +37,15 @@ pipeline {
         }
         stage('Code Coverage') {
               steps {
-                  sh 'curl -s https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+                  sh 'curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN'
               }
 		}
         stage('Deploy') {
             steps {
                 sh '''
                 echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
-                docker build -t springboot/java-web-app:latest .
-                docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
+                 docker tag springboot/java-web-app:latest registry.heroku.com/springboot-ci-cd/web
+                       docker build -t springboot/java-web-app:latest .
                 docker push registry.heroku.com/springboot-ci-cd/web
                 '''
             }

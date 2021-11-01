@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Code Coverage') {
               steps {
-                  sh 'curl -s https://codecov.io/bash | bash -s -- -t $CODECOV_TOKEN'
+                  sh 'curl -s https://codecov.io/bash | bash -x -s - -t $CODECOV_TOKEN'
               }
 		}
         stage('Deploy') {

@@ -32,14 +32,15 @@ pipeline {
             post {
                 always {
                     junit 'target/surefire-reports/*.xml'
+                    step( [ $class: 'JacocoPublisher' ] )
                 }
             }
         }
-        stage('Code Coverage') {
-              steps {
-                  sh 'curl -k https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
-              }
-		}
+//         stage('Code Coverage') {
+//               steps {
+//                   sh 'curl -k https://codecov.io/bash | bash -s - -t $CODECOV_TOKEN'
+//               }
+// 		}
         stage('Deploy') {
             steps {
                 sh '''
